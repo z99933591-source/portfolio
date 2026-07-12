@@ -46,11 +46,12 @@
     const list = activeCategory === "全部" ? data.works : data.works.filter((work) => work.category === activeCategory);
     $("#worksGrid").innerHTML = list.map((work) => {
       const index = data.works.indexOf(work);
+      const hasExternal = Array.isArray(work.externalLinks) && work.externalLinks.length > 0;
       const hasVideo = work.videoReady === true && work.video && !work.contactOnly;
       const coverMarkup = `<img loading="lazy" src="${safeUrl(work.cover || placeholderSvg(work.title, work.category))}" alt="${safeText(work.title)}封面">`;
-      const statusText = hasVideo ? "点击播放" : "联系查看";
-      const primaryText = hasVideo ? "在线播放" : "联系查看";
-      const noteText = hasVideo ? "网页视频为压缩预览版，高清原片可联系本人获取。" : "该作品视频可能因 GitHub 文件大小限制暂未上传，高清原片可通过邮箱联系本人查看。";
+      const statusText = hasExternal ? "网盘查看" : hasVideo ? "点击播放" : "联系查看";
+      const primaryText = hasExternal ? "查看网盘视频" : hasVideo ? "在线播放" : "联系查看";
+      const noteText = hasExternal ? "视频已整理至网盘，可按需选择夸克或百度网盘查看。" : hasVideo ? "网页视频为压缩预览版，高清原片可联系本人获取。" : "该作品视频可能因 GitHub 文件大小限制暂未上传，高清原片可通过邮箱联系本人查看。";
       return `<article class="work-card reveal visible"><div class="cover" data-open-work="${index}">${coverMarkup}<span>${statusText}</span></div><div class="work-body"><p class="chip">${safeText(work.category)}</p><h3>${safeText(work.title)}</h3><dl><div><dt>时长</dt><dd>${safeText(work.duration)}</dd></div><div><dt>软件</dt><dd>${safeText(work.software)}</dd></div><div><dt>负责</dt><dd>${safeText(work.responsibility)}</dd></div></dl><p>${safeText(work.summary)}</p><p class="quality-inline">${noteText}</p><div class="card-actions"><button class="btn btn-primary" type="button" data-open-work="${index}">${primaryText}</button><button class="btn btn-ghost" type="button" data-open-work="${index}">查看制作思路</button></div></div></article>`;
     }).join("");
     $$(".cover img").forEach((img) => {
@@ -97,9 +98,12 @@
 
   function openWork(index) {
     const work = data.works[index];
+    const externalLinks = Array.isArray(work.externalLinks) ? work.externalLinks.filter((link) => link && link.url) : [];
+    const hasExternal = externalLinks.length > 0;
     const hasVideo = work.videoReady === true && work.video && !work.contactOnly;
-    $("#modalVideo").innerHTML = hasVideo ? `<video controls preload="metadata" poster="${safeUrl(work.cover)}"><source src="${safeUrl(work.video)}" type="video/mp4">当前浏览器不支持视频播放。</video>` : `<div class="empty-video contact-video">视频暂未公开上传<br><span>可通过邮箱联系本人查看高清原片</span></div>`;
-    const qualityText = hasVideo ? "当前视频为压缩预览版，可能存在画质不清晰；如需查看高清原片，可通过邮箱联系本人单独提供。" : "该视频因 GitHub 文件大小限制可能暂未上传，高清原片可通过邮箱联系本人单独查看。";
+    const externalMarkup = `<div class="external-video"><strong>选择网盘查看作品视频</strong><p>为保证画质与访问稳定，视频原片通过网盘提供。</p><div class="external-links">${externalLinks.map((link) => `<a class="btn btn-primary" href="${safeUrl(link.url)}" target="_blank" rel="noopener">${safeText(link.platform || "打开网盘")}</a>`).join("")}</div>${externalLinks.map((link) => link.code ? `<p class="share-code">${safeText(link.platform)}提取码：<b>${safeText(link.code)}</b></p>` : "").join("")}</div>`;
+    $("#modalVideo").innerHTML = hasExternal ? externalMarkup : hasVideo ? `<video controls preload="metadata" poster="${safeUrl(work.cover)}"><source src="${safeUrl(work.video)}" type="video/mp4">当前浏览器不支持视频播放。</video>` : `<div class="empty-video contact-video">视频暂未公开上传<br><span>可通过邮箱联系本人查看高清原片</span></div>`;
+    const qualityText = hasExternal ? "该作品已提供网盘查看入口，可选择夸克网盘或百度网盘打开；如链接失效，可通过邮箱联系本人补发。" : hasVideo ? "当前视频为压缩预览版，可能存在画质不清晰；如需查看高清原片，可通过邮箱联系本人单独提供。" : "该视频因 GitHub 文件大小限制可能暂未上传，高清原片可通过邮箱联系本人单独查看。";
     $("#modalText").innerHTML = `<p class="chip">${safeText(work.category)}</p><h3>${safeText(work.title)}</h3><p class="quality-note modal-quality-note">${qualityText}</p><div class="modal-grid"><p><strong>视频类型：</strong>${safeText(work.category)}</p><p><strong>制作目的：</strong>${safeText(work.purpose)}</p><p><strong>素材来源：</strong>${safeText(work.source)}</p><p><strong>制作软件：</strong>${safeText(work.software)}</p><p><strong>负责环节：</strong>${safeText(work.responsibility)}</p></div><details open><summary>制作思路</summary><p>${safeText(work.thinking)}</p></details><details open><summary>剪辑亮点</summary><ul>${work.highlights.map((item) => `<li>${safeText(item)}</li>`).join("")}</ul></details>`;
     $("#workModal").classList.add("show");
     $("#workModal").setAttribute("aria-hidden", "false");
@@ -113,10 +117,27 @@
     document.body.classList.remove("modal-open");
   }
 
+  function openQrModal(item) {
+    $("#qrModalImage").src = safeUrl(item.path);
+    $("#qrModalImage").alt = `${item.title}放大图`;
+    $("#qrModalTitle").textContent = item.title;
+    $("#qrModalNote").textContent = item.note || "扫码查看作品或联系本人";
+    $("#qrModal").classList.add("show");
+    $("#qrModal").setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
+
+  function closeQrModal() {
+    $("#qrModal").classList.remove("show");
+    $("#qrModal").setAttribute("aria-hidden", "true");
+    $("#qrModalImage").removeAttribute("src");
+    document.body.classList.remove("modal-open");
+  }
+
   function renderAccountData() {
     $("#accountMetrics").innerHTML = data.accountData.map((item) => `<article class="metric-card"><span>${safeText(item.platform)}</span><strong>${safeText(item.value)}</strong><p>${safeText(item.label)}</p></article>`).join("");
     $("#barChart").innerHTML = data.accountData.map((item) => `<div class="bar-row"><span>${safeText(item.platform)} · ${safeText(item.label)}</span><div><i style="width:${Number(item.number) || 0}%"></i></div><b>${safeText(item.value)}</b></div>`).join("");
-    const qrcodes = data.qrcodes.map((item) => `<article class="qrcode-card"><img loading="lazy" src="${safeText(item.path)}" alt="${safeText(item.title)}"><h3>${safeText(item.title)}</h3><p>${safeText(item.note)}</p></article>`).join("");
+    const qrcodes = data.qrcodes.map((item, index) => `<article class="qrcode-card" tabindex="0" role="button" data-open-qrcode="${index}" aria-label="放大查看${safeText(item.title)}"><img loading="lazy" src="${safeText(item.path)}" alt="${safeText(item.title)}"><h3>${safeText(item.title)}</h3><p>${safeText(item.note)}</p><span class="qr-zoom-hint">点击放大</span></article>`).join("");
     $("#qrcodeGrid").innerHTML = qrcodes;
     $("#contactQrcodes").innerHTML = qrcodes;
     $$(".qrcode-card img").forEach((img) => img.addEventListener("error", () => img.classList.add("missing"), { once: true }));
@@ -162,7 +183,21 @@
     $("#workFilters").addEventListener("click", (event) => { const button = event.target.closest("button"); if (!button) return; activeCategory = button.dataset.category; renderFilters(); renderWorks(); });
     $("#worksGrid").addEventListener("click", (event) => { const button = event.target.closest("[data-open-work]"); if (button) openWork(Number(button.dataset.openWork)); });
     $$("[data-close]").forEach((node) => node.addEventListener("click", closeModal));
-    document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeModal(); });
+    $$("[data-qr-close]").forEach((node) => node.addEventListener("click", closeQrModal));
+    $$("#qrcodeGrid, #contactQrcodes").forEach((grid) => {
+      grid.addEventListener("click", (event) => {
+        const card = event.target.closest("[data-open-qrcode]");
+        if (card) openQrModal(data.qrcodes[Number(card.dataset.openQrcode)]);
+      });
+      grid.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        const card = event.target.closest("[data-open-qrcode]");
+        if (!card) return;
+        event.preventDefault();
+        openQrModal(data.qrcodes[Number(card.dataset.openQrcode)]);
+      });
+    });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") { closeModal(); closeQrModal(); } });
     $$(".js-resume").forEach((button) => button.addEventListener("click", handleResume));
     const copyWechatButton = $(".js-copy-wechat");
     if (copyWechatButton) {

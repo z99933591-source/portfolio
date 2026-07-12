@@ -686,6 +686,7 @@ dd {
 
 .qrcode-card {
   text-align: center;
+  cursor: zoom-in;
 }
 
 .qrcode-card img,
@@ -699,6 +700,13 @@ dd {
     linear-gradient(rgba(184, 217, 232, 0.55) 10px, transparent 10px) 0 0 / 22px 22px,
     var(--white);
   border: 1px solid var(--line);
+  transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.qrcode-card:hover img,
+.qrcode-card:focus-visible img {
+  transform: scale(1.04);
+  border-color: var(--aqua);
 }
 
 .qrcode-card h3 {
@@ -710,6 +718,20 @@ dd {
   margin-bottom: 0;
   color: var(--muted);
   font-size: 13px;
+}
+
+.qr-zoom-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  padding: 5px 12px;
+  color: var(--accent);
+  background: rgba(255, 253, 248, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .timeline-list {
@@ -813,6 +835,19 @@ dd {
   place-items: center;
 }
 
+.qr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: none;
+  padding: 24px;
+}
+
+.qr-modal.show {
+  display: grid;
+  place-items: center;
+}
+
 .modal-backdrop {
   position: absolute;
   inset: 0;
@@ -829,6 +864,52 @@ dd {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: 0 30px 80px rgba(20, 32, 38, 0.26);
+}
+
+.qr-modal-content {
+  position: relative;
+  width: min(430px, 100%);
+  padding: 18px 18px 22px;
+  text-align: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 30px 80px rgba(20, 32, 38, 0.26);
+  animation: qrPop 0.2s ease;
+}
+
+.qr-modal-content img {
+  width: min(300px, 78vw);
+  height: min(300px, 78vw);
+  object-fit: contain;
+  margin: 8px auto 16px;
+  padding: 12px;
+  display: block;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+
+.qr-modal-content h3 {
+  margin-bottom: 6px;
+  font-size: 20px;
+}
+
+.qr-modal-content p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+@keyframes qrPop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal-close {
@@ -876,6 +957,56 @@ dd {
 .contact-video span {
   color: #b8d9e8;
   font-size: 14px;
+}
+
+.external-video {
+  min-height: 260px;
+  padding: 34px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  text-align: center;
+  color: var(--white);
+  background:
+    linear-gradient(135deg, rgba(95, 143, 167, 0.92), rgba(39, 54, 64, 0.96)),
+    #273640;
+}
+
+.external-video strong {
+  font-size: 22px;
+}
+
+.external-video p {
+  margin: 0;
+  color: #d7e7ee;
+}
+
+.external-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.external-links .btn {
+  border-color: rgba(255, 255, 255, 0.42);
+  background: #fffdf8;
+  color: var(--ink);
+}
+
+.share-code {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.share-code b {
+  color: #fffdf8;
+  letter-spacing: 0.04em;
 }
 
 .video-fallback {
