@@ -991,9 +991,18 @@ dd {
 }
 
 .external-links .btn {
-  border-color: rgba(255, 255, 255, 0.42);
-  background: #fffdf8;
-  color: var(--ink);
+  min-width: 108px;
+  color: #142026 !important;
+  background: #fffdf8 !important;
+  border-color: rgba(255, 255, 255, 0.72) !important;
+  box-shadow: 0 10px 24px rgba(20, 32, 38, 0.16);
+  font-weight: 800;
+}
+
+.external-links .btn:hover {
+  color: #142026 !important;
+  background: #eaf5f9 !important;
+  border-color: #b8d9e8 !important;
 }
 
 .share-code {
