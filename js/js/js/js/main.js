@@ -220,6 +220,5 @@
     observeSections();
     revealNow();
   }
-
   init();
 })();
