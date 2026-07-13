@@ -1,44 +1,135 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="张紫薇短视频剪辑作品集">
   <title>张紫薇｜短视频剪辑作品集</title>
-  <link rel="stylesheet" href="css/style.css?v=20260712-netdisk-button">
+  <link rel="stylesheet" href="css/style.css?v=20260713-creator">
 </head>
 <body>
   <header class="site-header" id="top">
     <nav class="nav" aria-label="主导航">
-      <a class="brand" href="#home"><span class="brand-mark">Z</span><span>张紫薇</span></a>
-      <button class="menu-toggle" type="button" aria-label="打开菜单" aria-expanded="false"><span></span><span></span><span></span></button>
+      <a class="brand" href="#home"><span>Z</span><b>张紫薇</b></a>
+      <button class="menu-toggle" type="button" aria-label="打开菜单" aria-expanded="false"><i></i><i></i></button>
       <div class="nav-panel" id="navPanel">
-        <a href="#home">首页</a><a href="#about">关于我</a><a href="#works">作品展示</a><a href="#data">账号数据</a><a href="#projects">项目经历</a><a href="#experience">工作经历</a><a href="#skills">专业技能</a><a href="#contact">联系方式</a>
+        <a href="#home">Hero</a>
+        <a href="#works">Works</a>
+        <a href="#performance">Performance</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">AI Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
       </div>
-      <div class="nav-actions"><a class="btn btn-ghost" href="#works">查看作品</a><button class="btn btn-primary js-resume" type="button">获取简历</button></div>
+      <a class="nav-cta" href="#works">Selected Works</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero section" id="home" data-section>
-      <div class="hero-copy reveal visible"><p class="eyebrow" id="heroRole"></p><h1 id="heroName">张紫薇</h1><h2 id="heroTitle"></h2><p class="hero-intro" id="heroIntro"></p><div class="hero-actions"><a class="btn btn-primary" href="#works">查看作品</a><button class="btn btn-secondary js-resume" type="button">获取简历</button><a class="btn btn-ghost" href="#contact">联系我</a></div></div>
-      <div class="hero-visual reveal visible"><div class="editor-card ability-card"><div class="ability-card-head"><p class="eyebrow">Capability</p><h3>剪辑与运营能力概览</h3></div><div class="stats-grid" id="heroStats"></div></div></div>
+    <section class="hero" id="home" data-section>
+      <div class="hero-copy reveal visible">
+        <p class="eyebrow">SHORT VIDEO EDITOR / CONTENT CREATOR / AI WORKFLOW</p>
+        <h1>把商品卖点、情绪节奏和平台内容感，剪成能被看见的短视频。</h1>
+        <p class="hero-intro" id="heroIntro"></p>
+        <div class="hero-actions">
+          <a class="btn btn-dark" href="#works">查看精选作品</a>
+          <a class="btn btn-light" href="#contact">联系我</a>
+        </div>
+      </div>
+      <div class="hero-reel reveal visible" aria-label="代表作品自动展示">
+        <div class="reel-frame" id="heroReel"></div>
+        <div class="reel-meta">
+          <span id="reelCategory"></span>
+          <strong id="reelTitle"></strong>
+        </div>
+        <button class="reel-link" type="button" id="reelOpen">查看网盘视频</button>
+      </div>
     </section>
 
-    <section class="section" id="about" data-section><div class="section-head reveal visible"><p class="eyebrow">About</p><h2>关于我</h2></div><div class="about-layout"><article class="content-card reveal visible" id="aboutText"></article><div class="trait-grid reveal visible" id="traits"></div></div></section>
-    <section class="section" id="works" data-section><div class="section-head reveal visible"><p class="eyebrow">Portfolio</p><h2>作品展示</h2><p>食品带货、明星安利、自媒体内容与其他剪辑作品统一在这里管理。</p><p class="quality-note">因 GitHub 文件大小限制，网页内视频为压缩预览版，可能存在画质不清晰；如需查看高清原片，可通过邮箱联系本人单独提供。</p></div><div class="filter-bar reveal visible" id="workFilters"></div><div class="works-grid" id="worksGrid"></div></section>
-    <section class="section" id="data" data-section><div class="section-head reveal visible"><p class="eyebrow">Account Data</p><h2>个人账号运营数据</h2><p>以上数据为阶段性表现，可持续更新。</p></div><div class="data-layout"><div class="metric-grid reveal visible" id="accountMetrics"></div><div class="chart-card reveal visible"><h3>平台表现对比</h3><div class="bar-chart" id="barChart"></div></div><div class="qrcode-grid reveal visible" id="qrcodeGrid"></div></div></section>
-    <section class="section" id="projects" data-section><div class="section-head reveal visible"><p class="eyebrow">Projects</p><h2>项目经历</h2></div><div class="timeline-list" id="projectsList"></div></section>
-    <section class="section" id="experience" data-section><div class="section-head reveal visible"><p class="eyebrow">Experience</p><h2>工作经历</h2></div><div class="timeline-list" id="experienceList"></div></section>
-    <section class="section" id="skills" data-section><div class="section-head reveal visible"><p class="eyebrow">Skills</p><h2>专业技能</h2></div><div class="skills-grid" id="skillsGrid"></div></section>
-    <section class="section contact-section" id="contact" data-section><div class="section-head reveal visible"><p class="eyebrow">Contact</p><h2>联系我</h2></div><div class="contact-layout"><div class="content-card reveal visible"><div id="contactInfo"></div><div class="contact-actions"><button class="btn btn-primary js-resume" type="button">获取简历</button><a class="btn btn-secondary" href="mailto:1843788289@qq.com">发送邮件</a></div></div><div class="qrcode-grid reveal visible" id="contactQrcodes"></div></div><p class="privacy">本网站仅用于个人求职展示，未经允许请勿转载或商用。</p></section>
+    <section class="section selected-works" id="works" data-section>
+      <div class="section-kicker reveal">Selected Works</div>
+      <div class="section-title reveal">
+        <h2>精选案例</h2>
+        <p>食品带货、明星安利与个人账号内容，以设计作品集的方式展示剪辑目标、内容结构和视觉结果。</p>
+      </div>
+      <div class="work-filters reveal" id="workFilters"></div>
+      <div class="featured-grid" id="worksGrid"></div>
+    </section>
+
+    <section class="section performance" id="performance" data-section>
+      <div class="section-kicker reveal">Content Performance</div>
+      <div class="performance-layout">
+        <div class="section-title reveal">
+          <h2>内容表现，不只看剪辑画面。</h2>
+          <p>关注封面点击、前三秒吸引力、平台内容节奏和发布反馈，让视频从“做完”走向“有效”。</p>
+        </div>
+        <div class="metrics" id="accountMetrics"></div>
+      </div>
+    </section>
+
+    <section class="section experience" id="experience" data-section>
+      <div class="section-kicker reveal">Experience Timeline</div>
+      <div class="section-title reveal">
+        <h2>从达人商务到短视频剪辑</h2>
+        <p>理解电商内容从商品、达人、平台到视频表达的完整链路。</p>
+      </div>
+      <div class="timeline" id="experienceList"></div>
+    </section>
+
+    <section class="section ai-projects" id="projects" data-section>
+      <div class="section-kicker reveal">AI Projects</div>
+      <div class="section-title reveal">
+        <h2>AI 辅助创作与效率项目</h2>
+        <p>用 AI 做选题、脚本、表达优化和项目结构设计，把工具转化为可执行的内容生产力。</p>
+      </div>
+      <div class="project-strip" id="projectsList"></div>
+    </section>
+
+    <section class="section skills" id="skills" data-section>
+      <div class="section-kicker reveal">Skills</div>
+      <div class="section-title reveal">
+        <h2>剪辑、内容、AI 工具协同</h2>
+      </div>
+      <div class="skills-cloud" id="skillsGrid"></div>
+    </section>
+
+    <section class="section contact" id="contact" data-section>
+      <div class="contact-panel reveal">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2>期待加入需要内容审美、执行效率和学习速度的团队。</h2>
+          <div id="contactInfo"></div>
+          <div class="contact-actions">
+            <a class="btn btn-dark" href="mailto:1843788289@qq.com">发送邮件</a>
+            <button class="btn btn-light js-resume" type="button">获取简历</button>
+          </div>
+        </div>
+        <div class="qr-area" id="contactQrcodes"></div>
+      </div>
+      <p class="privacy">本网站仅用于个人求职展示，未经允许请勿转载或商用。</p>
+    </section>
   </main>
 
   <button class="back-top" type="button" aria-label="返回顶部">↑</button>
-  <div class="modal" id="workModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="modal-backdrop" data-close></div><div class="modal-content"><button class="modal-close" type="button" data-close>×</button><div class="video-wrap" id="modalVideo"></div><div class="modal-text" id="modalText"></div></div></div>
-  <div class="qr-modal" id="qrModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="二维码放大预览"><div class="modal-backdrop" data-qr-close></div><div class="qr-modal-content"><button class="modal-close" type="button" data-qr-close>×</button><img id="qrModalImage" alt="二维码放大图"><h3 id="qrModalTitle"></h3><p id="qrModalNote"></p></div></div>
+  <div class="modal" id="workModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-content">
+      <button class="modal-close" type="button" data-close>×</button>
+      <div id="modalVisual"></div>
+      <div class="modal-text" id="modalText"></div>
+    </div>
+  </div>
+  <div class="qr-modal" id="qrModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="二维码放大预览">
+    <div class="modal-backdrop" data-qr-close></div>
+    <div class="qr-modal-content">
+      <button class="modal-close" type="button" data-qr-close>×</button>
+      <img id="qrModalImage" alt="二维码放大图">
+      <h3 id="qrModalTitle"></h3>
+      <p id="qrModalNote"></p>
+    </div>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="js/data.js?v=20260712-netdisk-button"></script>
-  <script src="js/main.js?v=20260712-netdisk-button"></script>
+  <script src="js/data.js?v=20260713-creator"></script>
+  <script src="js/main.js?v=20260713-creator"></script>
 </body>
 </html>
